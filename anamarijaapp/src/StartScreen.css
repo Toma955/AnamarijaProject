@@ -36,9 +36,9 @@
 }
 
 .welcome-box {
-  width: 70%;
-  max-width: 300px;
-  height: 50vh;
+  width: 90%;
+  max-width: 400px;
+  height: 65vh;
   perspective: 1000px;
   margin: 0 auto;
   position: relative;
@@ -55,9 +55,9 @@
 }
 
 .welcome-box.shrink {
-  width: 50%;
-  max-width: 240px;
-  height: 300px;
+  width: 70%;
+  max-width: 320px;
+  height: 380px;
   margin-bottom: 30px;
 }
 
@@ -128,20 +128,16 @@
 
 .welcome-text {
   color: white;
-  font-size: 1.3rem;
-  line-height: 1.1;
-  font-weight: 600;
   text-align: center;
-  width: 100%;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100%;
-  margin-top: 70px;
-  animation: fadeIn 0.8s ease-out;
-  transition: all 0.8s ease-out;
+  font-size: 1.2rem;
+  line-height: 1;
+  margin: 0;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.5s ease;
+  position: relative;
+  z-index: 2;
 }
 
 .welcome-text .highlight {
@@ -167,8 +163,7 @@
 }
 
 .welcome-text p {
-  font-size: 1.2rem;
-  margin: 0.5em 0;
+  margin: 0.3em 0;
 }
 
 .welcome-text .highlight {
