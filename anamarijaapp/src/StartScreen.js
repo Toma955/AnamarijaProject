@@ -25,7 +25,7 @@ const StartScreen = ({ onStart }) => {
   const [isInstagramStyle, setIsInstagramStyle] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
   const [isNoButtonInstagram, setIsNoButtonInstagram] = useState(false);
-  const phoneNumber = '0950000000';
+  const phoneNumber = '0955709282';
   const instagramLink = 'https://www.instagram.com/anamarijaperdijic/';
   const audioRef = useRef(new Audio(audioFile));
 
@@ -109,7 +109,7 @@ const StartScreen = ({ onStart }) => {
   };
 
   const handleProgressBarDrag = (e) => {
-    if (audioRef.current && e.buttons === 1) { // Check if left mouse button is pressed
+    if (audioRef.current && e.buttons === 1) { 
       const progressBar = e.currentTarget;
       const dragPosition = (e.clientX - progressBar.getBoundingClientRect().left) / progressBar.offsetWidth;
       const newTime = dragPosition * audioRef.current.duration;
