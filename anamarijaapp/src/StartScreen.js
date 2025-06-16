@@ -16,6 +16,17 @@ const StartScreen = ({ onStart }) => {
   const [duration, setDuration] = useState(0);
   const [isSongEnded, setIsSongEnded] = useState(false);
   const [currentMessage, setCurrentMessage] = useState(0);
+  const [showSplitButtons, setShowSplitButtons] = useState(false);
+  const [showBackground, setShowBackground] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [displayedText, setDisplayedText] = useState('');
+  const [buttonResponse, setButtonResponse] = useState('');
+  const [isBlackBackground, setIsBlackBackground] = useState(false);
+  const [isInstagramStyle, setIsInstagramStyle] = useState(false);
+  const [showButtons, setShowButtons] = useState(true);
+  const [isNoButtonInstagram, setIsNoButtonInstagram] = useState(false);
+  const phoneNumber = '0950000000';
+  const instagramLink = 'https://www.instagram.com/anamarijaperdijic/';
   const audioRef = useRef(new Audio(audioFile));
 
   const formatTime = (time) => {
@@ -61,6 +72,20 @@ const StartScreen = ({ onStart }) => {
         setIsSongEnded(true);
         setIsPlaying(false);
         audioRef.current.pause();
+        
+        // Fade out progress bar with animation
+        const progressContainer = document.querySelector('.progress-container');
+        if (progressContainer) {
+          progressContainer.style.animation = 'fadeOut 5s ease-in-out forwards';
+          setTimeout(() => {
+            progressContainer.classList.add('fade-out');
+          }, 5000);
+        }
+
+        // Change text after progress bar fades out
+        setTimeout(() => {
+          setCurrentMessage(1);
+        }, 5000);
       }
 
       // Find current lyric based on time
@@ -95,51 +120,103 @@ const StartScreen = ({ onStart }) => {
   const handleNextClick = () => {
     if (currentMessage === 0) {
       setCurrentMessage(1);
+      setDisplayedText(renderMessageContent(1));
     } else if (currentMessage === 1) {
-      setIsSecondFlipped(true);
+      setIsTransitioning(true);
+      
+      const welcomeText = document.querySelector('.welcome-text');
+      const welcomeBox = document.querySelector('.welcome-box');
+      if (welcomeText && welcomeBox) {
+        welcomeText.classList.add('fade-out');
+        welcomeBox.classList.add('shrink');
+      }
+      
+      const mainButton = document.querySelector('.start-button');
+      if (mainButton) {
+        mainButton.classList.add('rotated');
+        setShowSplitButtons(true);
+        setShowBackground(true);
+      }
+      
       setTimeout(() => {
-        setCurrentMessage(2);
-      }, 400);
+        setIsSecondFlipped(true);
+        setTimeout(() => {
+          setCurrentMessage(2);
+          setDisplayedText(renderMessageContent(2));
+          setIsTransitioning(false);
+          if (welcomeText) {
+            welcomeText.classList.remove('fade-out');
+          }
+        }, 400);
+      }, 800);
     } else if (currentMessage === 2) {
       setIsThirdFlipped(true);
       setTimeout(() => {
         setCurrentMessage(3);
+        setDisplayedText(renderMessageContent(3));
       }, 400);
     }
   };
 
-  const renderMessage = () => {
-    if (currentMessage === 0) {
-      return (
-        <h1 className="welcome-text">
-          Ova je pjesma napisana i kreirana<br/>
-          <span className="highlight">samo za tebe.</span><br/>
-          Originalna je, nigdje ne postoji<br/>
-          i samo je <span className="highlight">Tvoja.</span>
-        </h1>
-      );
-    } else if (currentMessage === 1) {
-      return (
-        <div className="welcome-text">
-          <p>Imaš tu <span className="highlight">supersposobnost</span> inspirirat ljude ako se samo malo uroni u tvoju površinu...</p>
-          <p>Mislim da si <span className="highlight">kompletna osoba</span> koja je od putovanja preko gastronomije i mode pa do poduzetništva...</p>
-        </div>
-      );
-    } else if (currentMessage === 2) {
-      return (
-        <div className="welcome-text">
-          <p>Najviše me impresioniralo <span className="highlight">potencijal</span> kojeg nosiš duboko u sebi</p>
-          <p>Nešto sa čime se <span className="highlight">rađa</span> što se ne može naćit</p>
-          <p>Nešto što se ne može sakrit onome tko zna <span className="highlight">gdje promatrat</span></p>
-        </div>
-      );
+  const handleButtonClick = (isYes) => {
+    if (isYes) {
+      setButtonResponse('Hvala ti, javi se na wap (095 000 0000) ili nastavljamo premo Instagrama');
+      setIsInstagramStyle(true);
+      setIsNoButtonInstagram(true);
     } else {
-      return (
-        <div className="welcome-text">
-          <p>Svi naljepši <span className="highlight">ljubavni filmovi</span> i pjesme su napisane tek nakon što si se rodila...</p>
-          <p>Ja ne vjerujem u <span className="highlight">slučajnost</span>...</p>
-        </div>
-      );
+      if (isNoButtonInstagram) {
+        window.open(instagramLink, '_blank');
+      } else {
+        setButtonResponse('Oprosti na smetnji');
+        setIsBlackBackground(true);
+        setShowButtons(false);
+      }
+    }
+  };
+
+  const handleCopyNumber = () => {
+    navigator.clipboard.writeText(phoneNumber).then(() => {
+      setButtonResponse('Broj je kopiran! Možeš ga sada zalijepiti u WhatsApp');
+    }).catch(err => {
+      setButtonResponse('Greška pri kopiranju broja. Pokušaj ponovno.');
+    });
+  };
+
+  const renderMessageContent = (messageType) => {
+    switch(messageType) {
+      case 0:
+        return (
+          <h1 className="welcome-text">
+            Ova je pjesma napisana i kreirana<br/>
+            <span className="highlight">samo za tebe.</span><br/>
+            Originalna je, nigdje ne postoji<br/>
+            i samo je <span className="highlight">Tvoja.</span>
+          </h1>
+        );
+      case 1:
+        return (
+          <div className="welcome-text">
+            <p>Imaš tu <span className="highlight">supersposobnost</span> inspirirat ljude ako se samo malo uroni u tvoju površinu...</p>
+            <p>Mislim da si <span className="highlight">kompletna osoba</span> koja je od putovanja preko gastronomije i mode pa do poduzetništva...</p>
+          </div>
+        );
+      case 2:
+        return (
+          <div className="welcome-text">
+            <p>Pogledaj koliko si <span className="highlight">savršena</span>,</p>
+            <p>sve što želim je vidjeti te <span className="highlight">uživo</span>...</p>
+            <p>...ako si za...</p>
+          </div>
+        );
+      case 3:
+        return (
+          <div className="welcome-text">
+            <p>Svi naljepši <span className="highlight">ljubavni filmovi</span> i pjesme su napisane tek nakon što si se rodila...</p>
+            <p>Ja ne vjerujem u <span className="highlight">slučajnost</span>...</p>
+          </div>
+        );
+      default:
+        return null;
     }
   };
 
@@ -153,35 +230,62 @@ const StartScreen = ({ onStart }) => {
     }
   }, [isFlipped]);
 
+  useEffect(() => {
+    setDisplayedText(renderMessageContent(currentMessage));
+  }, []);
+
   return (
     <div className="start-screen">
-      <div className={`welcome-box ${isFlipped ? 'flipped' : ''} ${isSecondFlipped ? 'second-flipped' : ''} ${isThirdFlipped ? 'third-flipped' : ''}`}>
-        <div className="welcome-box-inner">
-          <div className="welcome-box-front">
-            <h1 className="welcome-text">
-              Dobrodošla Miss<br/>
-              <span className="highlight">Anamarija Predjelic</span><br/>
-              u webapp stvoreno<br/>
-              samo za tebe.<br/><br/>
-              ...Inspiriraš ljude<br/>
-              bez da se trudiš...<br/><br/>
-              Jesi spremna?<br/><br/>
-            </h1>
-          </div>
-          <div className="welcome-box-back" style={{ backgroundImage: `url(${backgroundImage})` }}>
-            <div className="welcome-text-overlay">
-              {renderMessage()}
-              {currentLyric && !isSongEnded && (
-                <div className="lyrics-container">
-                  <div className="lyrics-display">
-                    {currentLyric}
+      {showBackground && (
+        <div 
+          className="background-image" 
+          style={{ 
+            backgroundImage: isBlackBackground ? 'none' : `url(${backgroundImage})`,
+            backgroundColor: isBlackBackground ? 'black' : 'transparent'
+          }} 
+        />
+      )}
+      {!showSplitButtons && (
+        <div className={`welcome-box ${isFlipped ? 'flipped' : ''} ${isSecondFlipped ? 'second-flipped' : ''} ${isThirdFlipped ? 'third-flipped' : ''}`}>
+          <div className="welcome-box-inner">
+            <div className="welcome-box-front">
+              <h1 className="welcome-text">
+                Dobrodošla Miss<br/>
+                <span className="highlight">Anamarija Predjelic</span><br/>
+                u webapp stvoreno<br/>
+                samo za tebe.<br/><br/>
+                ...Inspiriraš ljude<br/>
+                bez da se trudiš...<br/><br/>
+                Jesi spremna?<br/><br/>
+              </h1>
+            </div>
+            <div className="welcome-box-back" style={{ backgroundImage: `url(${backgroundImage})` }}>
+              <div className="welcome-text-overlay">
+                {!isTransitioning && displayedText}
+                {currentLyric && !isSongEnded && (
+                  <div className="lyrics-container">
+                    <div className="lyrics-display">
+                      {currentLyric}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {showSplitButtons && !buttonResponse && (
+        <div className="final-message">
+          Jedino što želim je vidljeti savršenu tebe uživo
+        </div>
+      )}
+
+      {buttonResponse && (
+        <div className="button-response">
+          {buttonResponse}
+        </div>
+      )}
 
       {isFlipped && !isSongEnded && (
         <div className={`progress-container ${isSongEnded ? 'fade-out' : ''}`}>
@@ -201,12 +305,32 @@ const StartScreen = ({ onStart }) => {
         </div>
       )}
 
-      <button 
-        className={`start-button ${isFlipped ? 'playing' : ''}`} 
-        onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
-      >
-        {isFlipped ? (isPlaying ? 'Pauza' : (isSongEnded ? 'Dalje' : 'Pokreni')) : 'Spremna sam'}
-      </button>
+      {showButtons && (
+        <div className="button-container">
+          <button 
+            className={`start-button ${isFlipped ? 'playing' : ''}`} 
+            onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+          >
+            {isFlipped ? (isPlaying ? 'Pauza' : (isSongEnded ? 'Dalje' : 'Pokreni')) : 'Spremna sam'}
+          </button>
+          {showSplitButtons && (
+            <>
+              <button 
+                className={`start-button split left ${isInstagramStyle ? 'instagram-style' : ''}`} 
+                onClick={isInstagramStyle ? handleCopyNumber : () => handleButtonClick(true)}
+              >
+                {isInstagramStyle ? 'Kopiraj broj' : 'Da'}
+              </button>
+              <button 
+                className={`start-button split right ${isNoButtonInstagram ? 'instagram-style' : ''}`} 
+                onClick={() => handleButtonClick(false)}
+              >
+                {isNoButtonInstagram ? 'Natrag na Instagram' : 'Ne'}
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
