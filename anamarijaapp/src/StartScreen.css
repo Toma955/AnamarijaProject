@@ -24,6 +24,7 @@
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(202, 58, 244, 0.2);
   animation: fadeInUp 1s ease-out;
+  perspective: 2000px;
 }
 
 .welcome-box-inner {
@@ -37,6 +38,14 @@
 
 .welcome-box.flipped .welcome-box-inner {
   transform: rotateY(180deg);
+}
+
+.welcome-box.second-flipped .welcome-box-inner {
+  transform: rotateY(360deg);
+}
+
+.welcome-box.third-flipped .welcome-box-inner {
+  transform: rotateY(900deg);
 }
 
 .welcome-box-front,
@@ -53,6 +62,17 @@
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-box.second-flipped .welcome-box-back {
+  transform: rotateY(540deg);
+}
+
+.welcome-box.third-flipped .welcome-box-back {
+  transform: rotateY(900deg);
 }
 
 .welcome-text-overlay {
@@ -61,28 +81,64 @@
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  padding: 40px 20px;
+  padding: 30px 20px;
+  overflow: hidden;
 }
 
 .welcome-text {
   color: white;
-  font-size: 1.4rem;
-  line-height: 1.6;
+  font-size: 1.5rem;
+  line-height: 1.3;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 30px;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  margin-top: 100px;
+  animation: fadeIn 0.8s ease-out;
 }
 
-.welcome-text .highlight {
-  color: #ca3af4;
-  font-size: 1.6rem;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .welcome-text.fade-out {
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+
+.welcome-text p {
+  margin: 4px 0;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.welcome-text p:nth-child(1) { animation-delay: 0.1s; }
+.welcome-text p:nth-child(2) { animation-delay: 0.2s; }
+.welcome-text p:nth-child(3) { animation-delay: 0.3s; }
+
+.welcome-text .highlight {
+  color: #ca3af4;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(202, 58, 244, 0.3);
 }
 
 .progress-container {
@@ -96,7 +152,7 @@
   border-radius: 8px;
   margin: 40px 0;
   animation: slideDown 0.5s ease-out;
-  transition: opacity 2s ease-out, transform 2s ease-out;
+  transition: all 0.8s ease-out;
 }
 
 .progress-container.visible {
@@ -109,6 +165,7 @@
   opacity: 0;
   transform: translateY(-40px);
   pointer-events: none;
+  transition: all 0.8s ease-out;
 }
 
 .time-display {
@@ -186,17 +243,22 @@
 .lyrics-container {
   width: 100%;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
 }
 
 .lyrics-display {
   color: white;
-  font-size: 1.2rem;
-  line-height: 1.4;
-  padding: 15px;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  padding: 10px;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   animation: fadeIn 0.5s ease-out;
+  max-width: 90%;
+  margin: 0 auto;
 }
 
 @keyframes fadeIn {
@@ -251,7 +313,7 @@
   }
   to {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-20px);
   }
 }
 
@@ -270,10 +332,179 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.next-text {
+  color: white;
+  font-size: 1.4rem;
+  margin-top: 20px;
+  padding: 15px 30px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid #ca3af4;
+  border-radius: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+  text-shadow: 0 0 10px rgba(202, 58, 244, 0.5);
+}
+
+.next-text.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.next-text:hover {
+  background: rgba(202, 58, 244, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(202, 58, 244, 0.3);
+}
+
+.motivational-message {
+  color: white;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin: 30px auto;
+  padding: 25px;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #ca3af4;
+  border-radius: 20px;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s ease-out;
+  box-shadow: 0 0 20px rgba(202, 58, 244, 0.2);
+}
+
+.motivational-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.motivational-message p {
+  margin-bottom: 15px;
+}
+
+.motivational-message .highlight {
+  color: #ca3af4;
+  font-weight: 600;
+}
+
+.motivational-message .emphasis {
+  font-style: italic;
+  color: #ff9e9e;
+}
+
+.message-sequence {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 30px auto;
+}
+
+.message {
+  position: absolute;
+  width: 100%;
+  color: white;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #ca3af4;
+  border-radius: 20px;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s ease-out;
+  box-shadow: 0 0 20px rgba(202, 58, 244, 0.2);
+  pointer-events: none;
+}
+
+.message.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.message.next-button {
+  background: linear-gradient(45deg, #ca3af4, #8a2be2);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  border-radius: 24px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.message.next-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(202, 58, 244, 0.4);
+}
+
+.message .highlight {
+  color: #ca3af4;
+  font-weight: 600;
+}
+
+.message .emphasis {
+  font-style: italic;
+  color: #ff9e9e;
+}
+
+.final-message {
+  color: white;
+  font-size: 1.4rem;
+  line-height: 1.6;
+  text-align: center;
+  margin: 30px auto;
+  padding: 25px;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #ca3af4;
+  border-radius: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+  box-shadow: 0 0 20px rgba(202, 58, 244, 0.2);
+}
+
+.final-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.final-message .highlight {
+  color: #ca3af4;
+  font-weight: 600;
+}
+
+.message-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.message-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.message-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }

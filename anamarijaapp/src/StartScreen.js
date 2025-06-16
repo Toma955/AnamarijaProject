@@ -7,12 +7,15 @@ import lyrics from './lyrics';
 
 const StartScreen = ({ onStart }) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isSecondFlipped, setIsSecondFlipped] = useState(false);
+  const [isThirdFlipped, setIsThirdFlipped] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentLyric, setCurrentLyric] = useState('');
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isSongEnded, setIsSongEnded] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState(0);
   const audioRef = useRef(new Audio(audioFile));
 
   const formatTime = (time) => {
@@ -61,9 +64,10 @@ const StartScreen = ({ onStart }) => {
       }
 
       // Find current lyric based on time
-      const currentLyric = lyrics.find(lyric => 
-        Math.abs(currentTime - lyric.time) < 0.1
-      );
+      const currentLyric = lyrics.find((lyric, index) => {
+        const nextLyric = lyrics[index + 1];
+        return currentTime >= lyric.time && (!nextLyric || currentTime < nextLyric.time);
+      });
       if (currentLyric) {
         setCurrentLyric(currentLyric.text);
       }
@@ -88,6 +92,57 @@ const StartScreen = ({ onStart }) => {
     }
   };
 
+  const handleNextClick = () => {
+    if (currentMessage === 0) {
+      setCurrentMessage(1);
+    } else if (currentMessage === 1) {
+      setIsSecondFlipped(true);
+      setTimeout(() => {
+        setCurrentMessage(2);
+      }, 400);
+    } else if (currentMessage === 2) {
+      setIsThirdFlipped(true);
+      setTimeout(() => {
+        setCurrentMessage(3);
+      }, 400);
+    }
+  };
+
+  const renderMessage = () => {
+    if (currentMessage === 0) {
+      return (
+        <h1 className="welcome-text">
+          Ova je pjesma napisana i kreirana<br/>
+          <span className="highlight">samo za tebe.</span><br/>
+          Originalna je, nigdje ne postoji<br/>
+          i samo je <span className="highlight">Tvoja.</span>
+        </h1>
+      );
+    } else if (currentMessage === 1) {
+      return (
+        <div className="welcome-text">
+          <p>Imaš tu <span className="highlight">supersposobnost</span> inspirirat ljude ako se samo malo uroni u tvoju površinu...</p>
+          <p>Mislim da si <span className="highlight">kompletna osoba</span> koja je od putovanja preko gastronomije i mode pa do poduzetništva...</p>
+        </div>
+      );
+    } else if (currentMessage === 2) {
+      return (
+        <div className="welcome-text">
+          <p>Najviše me impresioniralo <span className="highlight">potencijal</span> kojeg nosiš duboko u sebi</p>
+          <p>Nešto sa čime se <span className="highlight">rađa</span> što se ne može naćit</p>
+          <p>Nešto što se ne može sakrit onome tko zna <span className="highlight">gdje promatrat</span></p>
+        </div>
+      );
+    } else {
+      return (
+        <div className="welcome-text">
+          <p>Svi naljepši <span className="highlight">ljubavni filmovi</span> i pjesme su napisane tek nakon što si se rodila...</p>
+          <p>Ja ne vjerujem u <span className="highlight">slučajnost</span>...</p>
+        </div>
+      );
+    }
+  };
+
   useEffect(() => {
     if (isFlipped) {
       const audio = audioRef.current;
@@ -100,7 +155,7 @@ const StartScreen = ({ onStart }) => {
 
   return (
     <div className="start-screen">
-      <div className={`welcome-box ${isFlipped ? 'flipped' : ''}`}>
+      <div className={`welcome-box ${isFlipped ? 'flipped' : ''} ${isSecondFlipped ? 'second-flipped' : ''} ${isThirdFlipped ? 'third-flipped' : ''}`}>
         <div className="welcome-box-inner">
           <div className="welcome-box-front">
             <h1 className="welcome-text">
@@ -111,18 +166,12 @@ const StartScreen = ({ onStart }) => {
               ...Inspiriraš ljude<br/>
               bez da se trudiš...<br/><br/>
               Jesi spremna?<br/><br/>
-              
             </h1>
           </div>
           <div className="welcome-box-back" style={{ backgroundImage: `url(${backgroundImage})` }}>
             <div className="welcome-text-overlay">
-              <h1 className="welcome-text">
-                Ova je pjesma napisana i kreirana<br/>
-                <span className="highlight">samo za tebe.</span><br/>
-                Originalna je, nigdje ne postoji<br/>
-                i samo je <span className="highlight">Tvoja.</span>
-              </h1>
-              {isPlaying && currentLyric && !isSongEnded && (
+              {renderMessage()}
+              {currentLyric && !isSongEnded && (
                 <div className="lyrics-container">
                   <div className="lyrics-display">
                     {currentLyric}
@@ -154,7 +203,7 @@ const StartScreen = ({ onStart }) => {
 
       <button 
         className={`start-button ${isFlipped ? 'playing' : ''}`} 
-        onClick={isFlipped ? handlePlayClick : handleStartClick}
+        onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
       >
         {isFlipped ? (isPlaying ? 'Pauza' : (isSongEnded ? 'Dalje' : 'Pokreni')) : 'Spremna sam'}
       </button>
