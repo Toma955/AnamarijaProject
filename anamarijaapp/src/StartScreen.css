@@ -36,9 +36,9 @@
 }
 
 .welcome-box {
-  width: 90%;
-  max-width: 400px;
-  height: 60vh;
+  width: 70%;
+  max-width: 300px;
+  height: 50vh;
   perspective: 1000px;
   margin: 0 auto;
   position: relative;
@@ -55,9 +55,9 @@
 }
 
 .welcome-box.shrink {
-  width: 70%;
-  max-width: 320px;
-  height: 380px;
+  width: 50%;
+  max-width: 240px;
+  height: 300px;
   margin-bottom: 30px;
 }
 
@@ -139,7 +139,7 @@
   justify-content: flex-start;
   align-items: center;
   height: 100%;
-  margin-top: 50px;
+  margin-top: 70px;
   animation: fadeIn 0.8s ease-out;
   transition: all 0.8s ease-out;
 }
@@ -695,6 +695,63 @@
   left: 50%;
   transform: translate(-50%, -50%);
   transition: all 0.3s ease;
+}
+
+.icons-container.show-headset-indicator .icon-item:first-child::after {
+  transform: translate(100%, -50%);
+  opacity: 0;
+}
+
+.icons-container.show-headset-indicator .icon-item:nth-child(2)::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 2px solid #ff6b6b;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.icons-container.show-info-indicator .icon-item:nth-child(2)::after {
+  transform: translate(100%, -50%);
+  opacity: 0;
+}
+
+.icons-container.show-info-indicator .icon-item:nth-child(3)::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 2px solid #ff6b6b;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.icons-container.show-question-indicator .icon-item:nth-child(3)::after {
+  transform: translate(100%, -50%);
+  opacity: 0;
+}
+
+.icons-container.show-question-indicator .icon-item:nth-child(4)::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 2px solid #ff6b6b;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
 }
 
 .icon-item:hover {
