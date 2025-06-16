@@ -40,7 +40,7 @@
   border: 2px solid #ca3af4;
   border-radius: 30px;
   padding: 0;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   width: 85%;
   max-width: 380px;
   height: 450px;
@@ -126,7 +126,7 @@
 .welcome-text {
   color: white;
   font-size: 1.5rem;
-  line-height: 1.3;
+  line-height: 1.1;
   font-weight: 600;
   text-align: center;
   width: 100%;
@@ -180,8 +180,8 @@
   max-width: 380px;
   padding: 10px;
   background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  margin: 40px 0;
+  border-radius: 15px;
+  margin: 30px 0;
   opacity: 1;
   transform: translateY(0);
   transition: all 5s ease-in-out;
@@ -209,21 +209,19 @@
 
 .progress-bar {
   flex: 1;
-  height: 12px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 6px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(77, 32, 130, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary-purple), var(--pink));
-  width: 0%;
+  background: linear-gradient(90deg, #ca3af4, #ff9e9e);
+  border-radius: 10px;
   transition: width 0.1s linear;
-  box-shadow: 0 0 10px rgba(77, 32, 130, 0.8);
 }
 
 .start-button {
@@ -244,23 +242,35 @@
 }
 
 .start-button.split {
-  width: 45%;
-  max-width: 180px;
-  font-size: 16px;
-  padding: 12px 20px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
+  position: fixed;
+  width: 140px;
+  height: 60px;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 25px;
+  text-shadow: 0 0 10px rgba(202, 58, 244, 0.5);
+  box-shadow: 0 0 20px rgba(202, 58, 244, 0.2);
+  opacity: 0;
+  transform: scale(0.8);
+  animation: splitButton 0.5s ease-out forwards;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .start-button.split.left {
-  left: 0;
+  left: 50px;
   background: linear-gradient(45deg, #2ecc71, #27ae60);
 }
 
 .start-button.split.right {
-  right: 0;
+  right: 50px;
   background: linear-gradient(45deg, #e74c3c, #c0392b);
 }
 
@@ -316,11 +326,11 @@
 }
 
 .lyrics-display {
-  color: white;
+  color: #ca3af4;
   font-size: 1.1rem;
   line-height: 1.2;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
   animation: fadeIn 0.5s ease-out;
   max-width: 90%;
@@ -529,13 +539,18 @@
 .button-container {
   position: fixed;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 85%;
-  max-width: 380px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
   height: 60px;
   perspective: 1000px;
   z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
 }
 
 .final-message {
@@ -598,10 +613,6 @@
     transform: translateY(-50%) scale(1);
     opacity: 1;
   }
-}
-
-.start-button.split {
-  animation: splitButton 0.5s ease-out forwards;
 }
 
 .start-button.instagram-style {

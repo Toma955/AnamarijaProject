@@ -232,7 +232,7 @@ const StartScreen = ({ onStart }) => {
 
   useEffect(() => {
     setDisplayedText(renderMessageContent(currentMessage));
-  }, []);
+  }, [currentMessage]);
 
   return (
     <div className="start-screen">
