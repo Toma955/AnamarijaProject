@@ -37,6 +37,10 @@ const StartScreen = ({ onStart }) => {
 
   const handleStartClick = () => {
     setIsFlipped(true);
+    const buttonContainer = document.querySelector('.button-container');
+    if (buttonContainer) {
+      buttonContainer.classList.add('clicked');
+    }
     setTimeout(() => {
       const progressContainer = document.querySelector('.progress-container');
       if (progressContainer) {
@@ -93,6 +97,7 @@ const StartScreen = ({ onStart }) => {
         const nextLyric = lyrics[index + 1];
         return currentTime >= lyric.time && (!nextLyric || currentTime < nextLyric.time);
       });
+      
       if (currentLyric) {
         setCurrentLyric(currentLyric.text);
       }
@@ -160,7 +165,7 @@ const StartScreen = ({ onStart }) => {
 
   const handleButtonClick = (isYes) => {
     if (isYes) {
-      setButtonResponse('Hvala ti, javi se na wap (095 000 0000) ili nastavljamo premo Instagrama');
+      setButtonResponse(`Hvala ti, javi se na wap ili nastavljamo pricat na instagramu`);
       setIsInstagramStyle(true);
       setIsNoButtonInstagram(true);
     } else {
@@ -197,7 +202,7 @@ const StartScreen = ({ onStart }) => {
         return (
           <div className="welcome-text">
             <p>Imaš tu <span className="highlight">supersposobnost</span> inspirirat ljude ako se samo malo uroni u tvoju površinu...</p>
-            <p>Mislim da si <span className="highlight">kompletna osoba</span> koja je od putovanja preko gastronomije i mode pa do poduzetništva...</p>
+            <p>Mislim da si <span className="highlight">kompletna osoba</span> koja je od putovanja preko gastronomije i mode pa do poduzetništva izgradila sebe cijelu ali mislim da zaslužuješ puno više...</p>
           </div>
         );
       case 2:
@@ -236,6 +241,12 @@ const StartScreen = ({ onStart }) => {
 
   return (
     <div className="start-screen">
+      <div className="landscape-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+          <path d="M16.48 2.52c3.27 1.55 5.61 4.72 5.97 8.48h1.5C23.44 4.84 18.29 0 12 0l-.66.03 3.81 3.81 1.33-1.32zm-6.25-.77c-.59-.59-1.54-.59-2.12 0L1.75 8.11c-.59.59-.59 1.54 0 2.12l12.02 12.02c.59.59 1.54.59 2.12 0l6.36-6.36c.59-.59.59-1.54 0-2.12L10.23 1.75zm4.6 19.44L2.81 9.17l6.36-6.36 12.02 12.02-6.36 6.36zm-7.31.29C4.25 19.94 1.91 16.76 1.55 13H.05C.56 19.16 5.71 24 12 24l.66-.03-3.81-3.81-1.33 1.32z"/>
+        </svg>
+        <p>Molimo okrenite uređaj u vertikalni položaj za najbolje iskustvo</p>
+      </div>
       {showBackground && (
         <div 
           className="background-image" 
@@ -250,13 +261,15 @@ const StartScreen = ({ onStart }) => {
           <div className="welcome-box-inner">
             <div className="welcome-box-front">
               <h1 className="welcome-text">
-                Dobrodošla Miss<br/>
+                Dobrodošla miss<br/>
                 <span className="highlight">Anamarija Predjelic</span><br/>
-                u webapp stvoreno<br/>
-                samo za tebe.<br/><br/>
-                ...Inspiriraš ljude<br/>
-                bez da se trudiš...<br/><br/>
-                Jesi spremna?<br/><br/>
+                ...u webapp stvoren za tebe,<br/>
+                sa domenom tvoga imena,<br/>
+                potpuni inspiriran sa tobom...<br/><br/>
+                ...mislim da zaslužuješ<br/>
+                nešto unikatno...<br/><br/>
+                Nadam se da imaš slušalice<br/>
+                i da si spremna?<br/><br/>
               </h1>
             </div>
             <div className="welcome-box-back" style={{ backgroundImage: `url(${backgroundImage})` }}>
@@ -277,7 +290,7 @@ const StartScreen = ({ onStart }) => {
 
       {showSplitButtons && !buttonResponse && (
         <div className="final-message">
-          Jedino što želim je vidljeti savršenu tebe uživo
+          Jedino što želim vidjet je ovu savršenu tebe uživo
         </div>
       )}
 
@@ -307,25 +320,27 @@ const StartScreen = ({ onStart }) => {
 
       {showButtons && (
         <div className="button-container">
-          <button 
-            className={`start-button ${isFlipped ? 'playing' : ''}`} 
-            onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
-          >
-            {isFlipped ? (isPlaying ? 'Pauza' : (isSongEnded ? 'Dalje' : 'Pokreni')) : 'Spremna sam'}
-          </button>
+          {!showSplitButtons && (
+            <button 
+              className={`start-button ${isFlipped ? 'playing' : ''}`} 
+              onClick={isFlipped ? (isSongEnded ? handleNextClick : handlePlayClick) : handleStartClick}
+            >
+              {isFlipped ? (isPlaying ? 'Pauza' : (isSongEnded ? 'Dalje' : 'Pokreni')) : 'Spremna sam'}
+            </button>
+          )}
           {showSplitButtons && (
             <>
               <button 
                 className={`start-button split left ${isInstagramStyle ? 'instagram-style' : ''}`} 
                 onClick={isInstagramStyle ? handleCopyNumber : () => handleButtonClick(true)}
               >
-                {isInstagramStyle ? 'Kopiraj broj' : 'Da'}
+                {isInstagramStyle ? 'Kopiraj' : 'Može'}
               </button>
               <button 
                 className={`start-button split right ${isNoButtonInstagram ? 'instagram-style' : ''}`} 
                 onClick={() => handleButtonClick(false)}
               >
-                {isNoButtonInstagram ? 'Natrag na Instagram' : 'Ne'}
+                {isNoButtonInstagram ? 'Natrag na Instagram' : 'Ne hvala'}
               </button>
             </>
           )}

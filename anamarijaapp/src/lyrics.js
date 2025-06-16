@@ -7,7 +7,7 @@ const lyrics = [
   { time: 24.00,  text: `tvojim je potezom postao kraj.` },
 
   { time: 29.00,  text: `Znam da nisam tvoj svijet,` },
-  { time: 32.16,  text: `al’ neću samo proći kraj.` },
+  { time: 31.50,  text: `al’ neću samo proći kraj.` },
   { time: 35.16,  text: `Oko tebe leden zid od tajni,` },
   { time: 38.00,  text: `a ja bih samo tvoj topli zagrljaj.` },
 
