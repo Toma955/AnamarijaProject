@@ -649,3 +649,102 @@
     flex-direction: column;
   }
 }
+
+.icons-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px 30px;
+  border-radius: 30px;
+  z-index: 10;
+}
+
+.icon-item {
+  color: #ff6b6b;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-item:first-child::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 2px solid #ff6b6b;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.icons-container.show-headset-indicator .icon-item:first-child::after {
+  transform: translate(100%, -50%);
+  opacity: 0;
+}
+
+.icons-container.show-headset-indicator .icon-item:nth-child(2)::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 2px solid #ff6b6b;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.icons-container.show-info-indicator .icon-item:nth-child(2)::after {
+  transform: translate(100%, -50%);
+  opacity: 0;
+}
+
+.icons-container.show-info-indicator .icon-item:nth-child(3)::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 2px solid #ff6b6b;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.icons-container.show-question-indicator .icon-item:nth-child(3)::after {
+  transform: translate(100%, -50%);
+  opacity: 0;
+}
+
+.icons-container.show-question-indicator .icon-item:nth-child(4)::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: 2px solid #ff6b6b;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.icon-item:hover {
+  transform: scale(1.1);
+}
